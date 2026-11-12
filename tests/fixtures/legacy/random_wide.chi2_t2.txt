@@ -1,0 +1,72 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+ab	-	10
+ac	-	8.24
+ad	-	11.2
+ae	-	9.04
+af	-	12.72
+ag	-	22.32
+ah	-	9.76
+ai	-	6.16
+aj	-	3.04
+ak	-	4.72
+al	-	11.2
+bc	-	16.72
+bd	-	21.4
+be	-	18.4
+bf	-	18.04
+bg	-	35.44
+bh	-	36.4
+bi	-	9.76
+bj	-	11.56
+bk	-	20.56
+bl	-	19
+cd	-	20.4
+ce	-	22.96
+cf	-	25.04
+cg	-	35.76
+ch	-	34.96
+ci	-	5.04
+cj	-	10.96
+ck	-	21.04
+cl	-	17.2
+de	-	43.6
+df	-	35.4
+dg	-	34.8
+dh	-	50.8
+di	-	13.2
+dj	-	8.2
+dk	-	13.2
+dl	-	22
+ef	-	52.48
+eg	-	46
+eh	-	51.52
+ei	-	5.68
+ej	-	13.36
+ek	-	18.16
+el	-	30.4
+fg	-	48.56
+fh	-	60.88
+fi	-	7.12
+fj	-	24.76
+fk	-	22.8
+fl	-	42.4
+gh	-	70.96
+gi	-	17.84
+gj	-	22.96
+gk	-	37.04
+gl	-	34.8
+hi	-	16.96
+hj	-	20.2
+hk	-	30.64
+hl	-	41.8
+ij	-	1.84
+ik	-	4.4
+il	-	6.8
+jk	-	10.48
+jl	-	9.4
+kl	-	18
+
+Total chi-square-value of design is 1498
+

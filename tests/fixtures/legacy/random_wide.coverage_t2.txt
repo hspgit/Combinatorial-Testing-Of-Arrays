@@ -1,0 +1,5 @@
+Please enter the name of the input file.
+random_wide.txt has 50 number of tests and 12 parameters
+Total unique Combinations possible = 1513
+Total combinations covered = 1210
+Coverage ratio = 0.799736

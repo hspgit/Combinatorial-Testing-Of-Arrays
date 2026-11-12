@@ -1,0 +1,5 @@
+Please enter the name of the input file.
+random_mixed.txt has 30 number of tests and 8 parameters
+Total unique Combinations possible = 361
+Total combinations covered = 308
+Coverage ratio = 0.853186

@@ -1,0 +1,5 @@
+Please enter the name of the input file.
+random_edge.txt has 4 number of tests and 5 parameters
+Total unique Combinations possible = 107
+Total combinations covered = 30
+Coverage ratio = 0.280374

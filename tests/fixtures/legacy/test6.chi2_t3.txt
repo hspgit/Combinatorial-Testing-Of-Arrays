@@ -1,0 +1,16 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+abc	-	9.2
+abd	-	4.4
+abe	-	9.2
+acd	-	15.2
+ace	-	14
+ade	-	14
+bcd	-	15.2
+bce	-	14
+bde	-	28.4
+cde	-	26
+
+Total chi-square-value of design is 149.6
+

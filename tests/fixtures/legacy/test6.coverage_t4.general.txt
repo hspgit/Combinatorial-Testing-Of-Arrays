@@ -1,0 +1,6 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+test6.txt has 10 number of tests and 5 parameters
+Total unique Combinations possible = 276
+Total combinations covered = 49
+Covering ratio = 0.177536

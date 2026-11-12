@@ -1,0 +1,9 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+ab	-	2
+ac	-	2
+bc	-	5
+
+Total chi-square-value of design is 9
+

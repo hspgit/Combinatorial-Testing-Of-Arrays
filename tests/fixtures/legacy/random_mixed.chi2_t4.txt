@@ -1,0 +1,76 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+abcd	-	114
+abce	-	133.2
+abcf	-	43.6
+abcg	-	80.4
+abch	-	98
+abde	-	174
+abdf	-	50
+abdg	-	78
+abdh	-	114
+abef	-	51.6
+abeg	-	99.6
+abeh	-	133.2
+abfg	-	27.6
+abfh	-	56.4
+abgh	-	75.6
+acde	-	242
+acdf	-	82
+acdg	-	130
+acdh	-	194
+acef	-	85.2
+aceg	-	123.6
+aceh	-	187.6
+acfg	-	53.2
+acfh	-	68.13
+acgh	-	104.4
+adef	-	154
+adeg	-	198
+adeh	-	290
+adfg	-	58
+adfh	-	87.33
+adgh	-	138
+aefg	-	75.6
+aefh	-	123.6
+aegh	-	162
+afgh	-	59.6
+bcde	-	378
+bcdf	-	122
+bcdg	-	186
+bcdh	-	258
+bcef	-	123.6
+bceg	-	200.4
+bceh	-	277.2
+bcfg	-	61.2
+bcfh	-	91.6
+bcgh	-	142.8
+bdef	-	186
+bdeg	-	276
+bdeh	-	354
+bdfg	-	84
+bdfh	-	122
+bdgh	-	186
+befg	-	85.2
+befh	-	152.4
+begh	-	214.8
+bfgh	-	85.2
+cdef	-	242
+cdeg	-	354
+cdeh	-	514
+cdfg	-	122
+cdfh	-	194
+cdgh	-	290
+cefg	-	133.2
+cefh	-	187.6
+cegh	-	296.4
+cfgh	-	85.2
+defg	-	198
+defh	-	258
+degh	-	354
+dfgh	-	114
+efgh	-	142.8
+
+Total chi-square-value of design is 1.102e+04
+

@@ -1,0 +1,19 @@
+Degree Of Saturation = 2, the design is SUPER-SATURATED
+Chi_square value for t=2 is 24.0038
+Chi_square efficiency is = 0.541581
+
+Chi_square - Frequency table: 
+Chi_square	|	Frequency
+2.000000	|	1
+2.000700	|	1
+5.000600	|	3
+5.001300	|	1
+
+Min chi_square_value in Design is 2.000000
+Max chi_square_value in Design is 5.001300
+
+Chi_square Array: 
+0.000000	5.000600	2.000000	5.000600	
+5.000600	0.000000	5.000600	5.001300	
+2.000000	5.000600	0.000000	2.000700	
+5.000600	5.001300	2.000700	0.000000	

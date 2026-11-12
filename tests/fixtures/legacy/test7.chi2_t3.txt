@@ -1,0 +1,10 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+abc	-	8
+abd	-	14
+acd	-	8
+bcd	-	14
+
+Total chi-square-value of design is 44
+

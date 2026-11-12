@@ -1,0 +1,5 @@
+Please enter the name of the input file.
+LA_SMALL.txt has 109 number of tests and 24 parameters
+Total unique Combinations possible = 4042
+Total combinations covered = 4042
+Coverage ratio = 1

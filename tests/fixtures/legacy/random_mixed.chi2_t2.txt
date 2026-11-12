@@ -1,0 +1,34 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+ab	-	2
+ac	-	5.733
+ad	-	8
+ae	-	10.8
+af	-	3.867
+ag	-	4.4
+ah	-	13.2
+bc	-	7.6
+bd	-	16
+be	-	6
+bf	-	2.4
+bg	-	6
+bh	-	7.6
+cd	-	30
+ce	-	16.4
+cf	-	4.133
+cg	-	9.2
+ch	-	10.53
+de	-	38
+df	-	5.333
+dg	-	14
+dh	-	26
+ef	-	6.8
+eg	-	12
+eh	-	27.6
+fg	-	2.8
+fh	-	9.467
+gh	-	15.6
+
+Total chi-square-value of design is 321.5
+

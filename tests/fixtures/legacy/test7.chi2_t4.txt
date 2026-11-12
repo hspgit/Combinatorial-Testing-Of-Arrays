@@ -1,0 +1,7 @@
+Please enter the name of the input file.
+Enter the value of t for which testing is to be performed
+
+abcd	-	32
+
+Total chi-square-value of design is 32
+

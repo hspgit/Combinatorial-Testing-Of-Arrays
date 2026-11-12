@@ -1,0 +1,28 @@
+Please unzip the chi^2_efficiency.zip' file using any file extracting software like 7zip or WinZip.
+
+you'll find the main c++ source code file named as "chi^2_efficiency.cpp" and some txt files that are used for testing this code
+open the command prompt window in the current folder
+you must have a c++ compiler installed in your system for running the code. the follwing instructions are for gcc compiler by GNU Compiler Collection
+type the command g++ -- version
+this will tell you the current version of gcc compiler installed in you system.(make sure no error messages pop up)
+
+next we want to compile our c++ code.type ,
+g++ chi^2_efficiency.cpp -o chi^2_efficiency
+
+this will create a executable file named "chi^2_efficiency.exe" in the current folder.
+
+to run this executable file type
+chi^2_efficiency.exe
+
+now the program will prompt you to type the test file name.
+there are 9 files in the folder that can be tested(test1.txt, test2.txt, test3.txt, test4.txt, test5.txt, test6.txt, test7.txt, new_test.txt and LA_SMALL.txt)
+type any one of the file name(along with the .txt extension)
+
+now the program will prompt you to type a name for output file.
+type any filename with .txt extension(eg. output1.txt)
+
+
+now you can check the ouput text file created in step 2. It will have chi^2 value, chi^2 efficiency, degree of saturation, chi^2 frequency table and chi^2 array.
+
+
+

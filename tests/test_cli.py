@@ -104,3 +104,117 @@ def test_cli_error_handling(capsys: pytest.CaptureFixture[str]) -> None:
     # Invalid strength
     with pytest.raises(SystemExit):
         main(["coverage", str(OLD_DIR / "test1.txt"), "-t", "0"])
+
+
+def test_cli_raw_numeric_matrix(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    matrix_file = tmp_path / "matrix.txt"
+    matrix_file.write_text("0 1 0\n1 2 1\n0 0 1\n", encoding="utf-8")
+
+    code = main(["coverage", str(matrix_file), "-t", "2"])
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "N=3, k=3" in out
+    assert "t=2:" in out
+
+
+def test_cli_csv_and_explicit_levels(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    csv_file = tmp_path / "test.csv"
+    csv_file.write_text(
+        "Browser,OS,Resolution\nChrome,Windows,1080p\nFirefox,Linux,4k\nChrome,MacOS,1080p\n",
+        encoding="utf-8",
+    )
+
+    # Inferred levels
+    code = main(["coverage", str(csv_file), "-t", "2"])
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "N=3, k=3" in out
+
+    # Explicit --levels with spaces
+    code_levels = main(["coverage", str(csv_file), "-t", "2", "--levels", "3", "4", "3"])
+    assert code_levels == 0
+    out_levels = capsys.readouterr().out
+    assert "N=3, k=3" in out_levels
+
+    # Explicit --levels with commas
+    code_commas = main(["coverage", str(csv_file), "-t", "2", "--levels", "3,4,3"])
+    assert code_commas == 0
+
+
+def test_cli_header_flag(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    csv_file = tmp_path / "data.csv"
+    csv_file.write_text("0,1,0\n1,2,1\n", encoding="utf-8")
+
+    # Explicit --no-header
+    code = main(["saturation", str(csv_file), "--no-header"])
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "degree of saturation" in out
+
+
+def test_cli_levels_error_handling(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    matrix_file = tmp_path / "matrix.txt"
+    matrix_file.write_text("0 1 0\n1 2 1\n", encoding="utf-8")
+
+    # Zero level
+    with pytest.raises(SystemExit):
+        main(["coverage", str(matrix_file), "--levels", "0", "2", "2"])
+
+    # Non-integer level
+    with pytest.raises(SystemExit):
+        main(["coverage", str(matrix_file), "--levels", "invalid"])
+
+    # Mismatched column count
+    code = main(["coverage", str(matrix_file), "--levels", "2", "2"])
+    assert code == 1
+    err = capsys.readouterr().err
+    assert "expected 3 levels" in err
+
+
+def test_cli_flags_before_files(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    csv_file = tmp_path / "test.csv"
+    csv_file.write_text("Browser,OS\nChrome,Windows\nFirefox,Linux\n", encoding="utf-8")
+
+    # Space-separated --levels before file
+    code_spaces = main(["saturation", "--levels", "3", "4", str(csv_file)])
+    assert code_spaces == 0
+    out_spaces = capsys.readouterr().out
+    assert "degree of saturation" in out_spaces
+
+    # Comma-separated --levels before file
+    code_commas = main(["saturation", "--levels", "3,4", str(csv_file)])
+    assert code_commas == 0
+    out_commas = capsys.readouterr().out
+    assert "degree of saturation" in out_commas
+
+    # -t / --strength after file
+    code_strength = main(["coverage", str(OLD_DIR / "test1.txt"), "-t", "2"])
+    assert code_strength == 0
+    out_strength = capsys.readouterr().out
+    assert "t=2:" in out_strength
+
+
+def test_cli_mixed_format_batch(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    legacy_file = OLD_DIR / "test1.txt"  # 3 columns: (2, 3, 2)
+    csv_file = tmp_path / "matrix3.csv"  # 3 columns
+    csv_file.write_text("0,1,0\n1,2,1\n", encoding="utf-8")
+
+    code = main(
+        [
+            "saturation",
+            "--levels",
+            "3",
+            "4",
+            "3",
+            str(legacy_file),
+            str(csv_file),
+            "--format",
+            "json",
+        ]
+    )
+    assert code == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert isinstance(payload, list)
+    assert len(payload) == 2
+    assert "degree_of_saturation" in payload[0]
+    assert "degree_of_saturation" in payload[1]

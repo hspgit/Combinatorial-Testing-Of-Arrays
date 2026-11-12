@@ -128,6 +128,35 @@ def _positive_int(text: str) -> int:
     return value
 
 
+class _LevelsAction(argparse.Action):
+    """Parse --levels into a tuple of positive integers, accepting spaces or commas."""
+
+    def __call__(
+        self,
+        parser: argparse.ArgumentParser,
+        namespace: argparse.Namespace,
+        values: str | Sequence[Any] | None,
+        option_string: str | None = None,
+    ) -> None:
+        if values is None:
+            setattr(namespace, self.dest, None)
+            return
+        raw_items: list[str] = [values] if isinstance(values, str) else [str(v) for v in values]
+        levels: list[int] = []
+        for item in raw_items:
+            for part in item.replace(",", " ").split():
+                try:
+                    val = int(part)
+                    if val < 1:
+                        raise ValueError
+                except ValueError:
+                    parser.error(f"argument --levels: invalid positive integer: {part!r}")
+                levels.append(val)
+        if not levels:
+            parser.error("argument --levels: at least one level must be specified")
+        setattr(namespace, self.dest, tuple(levels))
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="cit-tools",
@@ -142,6 +171,19 @@ def _build_parser() -> argparse.ArgumentParser:
         "--format", choices=["text", "json"], default="text", help="output format (default: text)"
     )
     common.add_argument("-o", "--output", metavar="PATH", help="write to PATH instead of stdout")
+    common.add_argument(
+        "--levels",
+        action=_LevelsAction,
+        default=None,
+        metavar="L",
+        help="explicit level count for each column (overrides inferred levels)",
+    )
+    common.add_argument(
+        "--header",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="whether input CSV/TSV has a header row (default: auto-detect)",
+    )
 
     def strength_arg(p: argparse.ArgumentParser, default: list[int] | None, help_: str) -> None:
         p.add_argument(
@@ -172,14 +214,47 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _normalize_argv(argv: Sequence[str] | None) -> list[str] | None:
+    if argv is None:
+        return None
+    raw = list(argv)
+    res: list[str] = []
+    i = 0
+    while i < len(raw):
+        arg = raw[i]
+        if arg == "--levels":
+            i += 1
+            levels: list[str] = []
+            while i < len(raw) and not raw[i].startswith("-"):
+                parts = raw[i].replace(",", " ").split()
+                if parts and all(p.isdigit() and int(p) >= 1 for p in parts):
+                    levels.extend(parts)
+                    i += 1
+                else:
+                    break
+            if levels:
+                res.extend([arg, ",".join(levels)])
+            elif i < len(raw) and not raw[i].startswith("-"):
+                res.extend([arg, raw[i]])
+                i += 1
+            else:
+                res.append(arg)
+        else:
+            res.append(arg)
+            i += 1
+    return res
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the CLI; returns the process exit status (0 ok, 1 error, 2 usage)."""
-    args = _build_parser().parse_args(argv)
+    raw_argv = list(argv) if argv is not None else sys.argv[1:]
+    args = _build_parser().parse_args(_normalize_argv(raw_argv))
     handler: _Command = args.handler
     results: list[tuple[dict[str, Any], str]] = []
     try:
         for path in args.files:
-            results.append(handler(load_design(path), path, args))
+            design = load_design(path, levels=args.levels, header=args.header)
+            results.append(handler(design, path, args))
     except (DesignError, OSError) as exc:
         print(f"cit-tools: error: {exc}", file=sys.stderr)
         return 1

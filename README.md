@@ -28,8 +28,9 @@ python3 -m venv .venv
 
 ```bash
 cit-tools report old/new_test.txt                 # every metric (like chi^2_efficiency.cpp)
-cit-tools coverage old/*.txt -t 2 3               # t-way coverage, several files at once
-cit-tools chi-square design.txt -t 3 --values     # per-combination chi-square values
+cit-tools coverage design.csv -t 2 3              # standard CSV with categorical strings
+cit-tools coverage matrix.txt --levels 3 3 2      # raw matrix with explicit levels override
+cit-tools chi-square design.tsv -t 3 --values     # TSV with combination values
 cit-tools saturation design.txt --format json     # machine-readable output
 cit-tools report design.txt -o report.txt         # write to a file
 ```
@@ -43,18 +44,66 @@ a JSON object and several files give an array. Exit status: 0 success,
 ```python
 from cit_tools import load_design, coverage, chi_square, chi_square_efficiency
 
-design = load_design("old/new_test.txt")
+# Load legacy files, raw numeric matrices, or CSV/TSV with categorical strings:
+design = load_design("design.csv")
 coverage(design, 2).ratio  # Fraction(...)
 chi_square(design, 2).total  # Fraction(707, 1)
 float(chi_square_efficiency(design))  # 0.898161...
+
+# Override levels when some levels are unobserved in the test design:
+design_explicit = load_design("matrix.txt", levels=[3, 4, 3])
 ```
 
 Designs can also be built directly: `Design(levels=[2, 3], rows=[[0, 1], [1, 2]])`.
 Exact quantities are returned as `fractions.Fraction`; use `float()` if needed.
 
-## Input format
+## Input formats
 
-Whitespace-separated integers (line breaks are not significant):
+`cit-tools` supports modern data formats out of the box with auto-detection,
+while maintaining full backward compatibility with the legacy format:
+
+### 1. Raw Numeric Matrices
+Whitespace- or tab-separated rows of integers without upfront declarations:
+
+```text
+0 1 0
+1 2 1
+0 0 1
+```
+
+`N` (rows), `k` (columns), and factor levels (`max(val) + 1` per column) are
+automatically inferred.
+
+### 2. Standard Delimited Files (CSV / TSV)
+Comma-, semicolon-, or tab-delimited files with optional headers and categorical
+strings:
+
+```csv
+Browser,OS,Resolution
+Chrome,Windows,1080p
+Firefox,Linux,4k
+Chrome,MacOS,1080p
+```
+
+Categorical strings are automatically mapped to zero-indexed integers in order of
+appearance, and factor levels are inferred from distinct categories. Headers are
+auto-detected (or controlled explicitly with `--header` / `--no-header`).
+
+### 3. Overriding Inferred Levels (`--levels`)
+When some factor levels are unobserved in the data (e.g. testing an incomplete
+covering array), specify explicit levels using the `--levels` CLI flag or `levels`
+parameter:
+
+```bash
+cit-tools coverage design.csv --levels 3 4 3
+```
+
+```python
+design = load_design("design.csv", levels=[3, 4, 3])
+```
+
+### 4. Legacy Text Format
+Preserved with full backward compatibility:
 
 ```text
 N k                 # rows, columns
@@ -64,8 +113,7 @@ x11 x12 ... x1k     # N rows of k values, value j in 0 .. lj-1
 ...
 ```
 
-The parser is strict and reports a clear error for files that do not match
-their header, which the C++ tools silently mis-read.
+The parser is strict and reports clear errors for malformed or out-of-range designs.
 
 ## Changes from the C++ programs
 
